@@ -28,14 +28,18 @@
 				
 				switch($resu_frappe)
 				{
-					case 1:
+					case Personnage::CEST_MOI:
 						$message = "Impossible de se frapper soi-même !";
 						break;
-					case 2:
+						
+					case Personnage::PERSONNAGE_TUE:
+						$manager->update($perso);
 						$message = "Le personnage " . $persoAFrapper->nom() . " est mort !";
 						$manager->delete($persoAFrapper);
 						break;
-					case 3:
+						
+					case Personnage::PERSONNAGE_FRAPPE:
+						$manager->update($perso);
 						$message = "Le personnage " . $persoAFrapper->nom() . " a été frappé !";
 						$manager->update($persoAFrapper);
 						break;
@@ -104,7 +108,9 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
       <legend>Mes informations</legend>
       <p>
         Nom : <?= htmlspecialchars($perso->nom()) ?><br />
-        Dégâts : <?= $perso->degats() ?>
+        Dégâts : <?= $perso->degats() ?><br />
+        Expérience : <?= $perso->experience() ?><br />
+        Level : <?= $perso->level() ?>
       </p>
     </fieldset>
     
