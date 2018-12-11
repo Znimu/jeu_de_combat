@@ -110,7 +110,8 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
         Nom : <?= htmlspecialchars($perso->nom()) ?><br />
         Dégâts : <?= $perso->degats() ?><br />
         Expérience : <?= $perso->experience() ?><br />
-        Level : <?= $perso->level() ?>
+        Level : <?= $perso->level() ?><br />
+        Force : <?= $perso->forcePersonnage() ?>
       </p>
     </fieldset>
     

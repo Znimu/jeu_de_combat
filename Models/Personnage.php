@@ -5,7 +5,8 @@ class Personnage
           $_id,
           $_nom,
 					$_experience,
-					$_level;
+					$_level,
+					$_forcePersonnage;
   
   const CEST_MOI = 1; // Constante renvoyée par la méthode `frapper` si on se frappe soi-même.
   const PERSONNAGE_TUE = 2; // Constante renvoyée par la méthode `frapper` si on a tué le personnage en le frappant.
@@ -29,7 +30,7 @@ class Personnage
     
     // On indique au personnage qu'il doit recevoir des dégâts.
     // Puis on retourne la valeur renvoyée par la méthode : self::PERSONNAGE_TUE ou self::PERSONNAGE_FRAPPE
-    return $perso->recevoirDegats();
+    return $perso->recevoirDegats($this->_forcePersonnage);
   }
   
   public function hydrate(array $donnees)
@@ -45,9 +46,9 @@ class Personnage
     }
   }
   
-  public function recevoirDegats()
+  public function recevoirDegats(int $bonus)
   {
-    $this->_degats += 5;
+    $this->_degats += 5 + $bonus;
     
     // Si on a 100 de dégâts ou plus, on dit que le personnage a été tué.
     if ($this->_degats >= 100)
@@ -73,7 +74,10 @@ class Personnage
 	
 	public function levelUp() {
 		if ($this->_level < 100)
+		{
 			$this->_level += 1;
+			$this->_forcePersonnage += 2;
+		}
 	}
 	
 	public function nomValide()
@@ -107,6 +111,11 @@ class Personnage
   public function level()
   {
     return $this->_level;
+  }
+  
+  public function forcePersonnage()
+  {
+    return $this->_forcePersonnage;
   }
 	
 	// SETTERS //
@@ -156,6 +165,16 @@ class Personnage
     if ($level >= 1 && $level < 100)
     {
       $this->_level = $level;
+    }
+  }
+  
+  public function setForcePersonnage($forcePersonnage)
+  {
+    $forcePersonnage = (int) $forcePersonnage;
+    
+    if ($forcePersonnage >= 0 && $forcePersonnage <= 200)
+    {
+      $this->_forcePersonnage = $forcePersonnage;
     }
   }
 }

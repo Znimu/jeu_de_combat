@@ -49,14 +49,14 @@ class PersonnagesRepository
   {
     if (is_int($info))
     {
-      $q = $this->_db->query('SELECT id, nom, degats, experience, level FROM personnages WHERE id = '.$info);
+      $q = $this->_db->query('SELECT * FROM personnages WHERE id = '.$info);
       $donnees = $q->fetch(PDO::FETCH_ASSOC);
       
       return new Personnage($donnees);
     }
     else
     {
-      $q = $this->_db->prepare('SELECT id, nom, degats, experience, level FROM personnages WHERE nom = :nom');
+      $q = $this->_db->prepare('SELECT * FROM personnages WHERE nom = :nom');
       $q->execute([':nom' => $info]);
     
       return new Personnage($q->fetch(PDO::FETCH_ASSOC));
@@ -67,7 +67,7 @@ class PersonnagesRepository
   {
     $persos = [];
     
-    $q = $this->_db->prepare('SELECT id, nom, degats, experience, level FROM personnages WHERE nom <> :nom ORDER BY nom');
+    $q = $this->_db->prepare('SELECT * FROM personnages WHERE nom <> :nom ORDER BY nom');
     $q->execute([':nom' => $nom]);
     
     while ($donnees = $q->fetch(PDO::FETCH_ASSOC))
@@ -80,11 +80,12 @@ class PersonnagesRepository
   
   public function update(Personnage $perso)
   {
-    $q = $this->_db->prepare('UPDATE personnages SET degats = :degats, experience = :experience, level = :level WHERE id = :id');
+    $q = $this->_db->prepare('UPDATE personnages SET degats = :degats, experience = :experience, level = :level, forcePersonnage = :forcePersonnage WHERE id = :id');
     
     $q->bindValue(':degats', $perso->degats(), PDO::PARAM_INT);
     $q->bindValue(':experience', $perso->experience(), PDO::PARAM_INT);
     $q->bindValue(':level', $perso->level(), PDO::PARAM_INT);
+    $q->bindValue(':forcePersonnage', $perso->forcePersonnage(), PDO::PARAM_INT);
     $q->bindValue(':id', $perso->id(), PDO::PARAM_INT);
     
     $q->execute();
