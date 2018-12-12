@@ -10,8 +10,9 @@ class PersonnagesRepository
   
   public function add(Personnage $perso)
   {
-    $q = $this->_db->prepare('INSERT INTO personnages(nom) VALUES(:nom)');
+    $q = $this->_db->prepare('INSERT INTO personnages(nom, type) VALUES(:nom, :type)');
     $q->bindValue(':nom', $perso->nom());
+    $q->bindValue(':type', $perso->type());
     $q->execute();
     
     $perso->hydrate([

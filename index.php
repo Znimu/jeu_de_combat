@@ -43,6 +43,10 @@
 						$message = "Le personnage " . $persoAFrapper->nom() . " a été frappé !";
 						$manager->update($persoAFrapper);
 						break;
+						
+					case Personnage::COUPS_EPUISES:
+						$message = "Le personnage " . $perso->nom() . " a épuisé ses frappes !";
+						break;
 				}
 			}
 			else
@@ -56,9 +60,22 @@
 		}
 	}
 	
-	if (isset($_POST['creer']) && isset($_POST['nom'])) // Si on a voulu créer un personnage.
+	if (isset($_POST['creer']) && isset($_POST['nom']) && isset($_POST['type'])) // Si on a voulu créer un personnage.
 	{
-		$perso = new Personnage(['nom' => $_POST['nom']]); // On crée un nouveau personnage.
+		if ($_POST['type'] == "magicien")
+		{
+			$perso = new Magicien([
+				'nom' => $_POST['nom'],
+				'type' => $_POST['type']
+			]); // On crée un nouveau magicien.
+		}
+		elseif ($_POST['type'] == "guerrier")
+		{
+			$perso = new Guerrier([
+				'nom' => $_POST['nom'],
+				'type' => $_POST['type']
+			]); // On crée un nouveau guerrier.
+		}
 		
 		if (!$perso->nomValide())
 		{
@@ -73,6 +90,7 @@
 		else
 		{
 			$manager->add($perso);
+			$perso = $manager->get($perso->nom());
 		}
 	}
 	elseif (isset($_POST['utiliser']) && isset($_POST['nom'])) // Si on a voulu utiliser un personnage.
@@ -102,6 +120,7 @@ if (isset($message)) // On a un message à afficher ?
 }
 if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
 {
+	//var_dump($perso->dernierCoup());
 ?>
     <p><a href="?deconnexion=1">Déconnexion</a></p>
     <fieldset>
@@ -111,7 +130,9 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
         Dégâts : <?= $perso->degats() ?><br />
         Expérience : <?= $perso->experience() ?><br />
         Level : <?= $perso->level() ?><br />
-        Force : <?= $perso->forcePersonnage() ?>
+        Force : <?= $perso->forcePersonnage() ?><br />
+        <!--NB de coups : <?= $perso->nbCoups() ?><br />
+        Dernier coup : <?= ($perso->dernierCoup() == null ? "--" : DateTime::createFromFormat('d/m/Y', $perso->dernierCoup()->date)) ?>-->
       </p>
     </fieldset>
     
@@ -140,8 +161,12 @@ else
     <form action="" method="post">
       <p>
         Nom : <input type="text" name="nom" maxlength="50" />
+        <input type="submit" value="Utiliser ce personnage" name="utiliser" /><br />
+				Type : 	<select name="type">
+									<option value="magicien">Magicien</option>
+									<option value="guerrier">Guerrier</option>
+								</select>
         <input type="submit" value="Créer ce personnage" name="creer" />
-        <input type="submit" value="Utiliser ce personnage" name="utiliser" />
       </p>
     </form>
 <?php

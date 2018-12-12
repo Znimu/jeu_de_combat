@@ -6,16 +6,36 @@ class Personnage
           $_nom,
 					$_experience,
 					$_level,
-					$_forcePersonnage;
+					$_forcePersonnage,
+					$_nbCoups,
+					$_dernierCoup;
+	
+	protected	$timeEndormi,
+						$type,
+						$atout;
   
   const CEST_MOI = 1; // Constante renvoyée par la méthode `frapper` si on se frappe soi-même.
   const PERSONNAGE_TUE = 2; // Constante renvoyée par la méthode `frapper` si on a tué le personnage en le frappant.
   const PERSONNAGE_FRAPPE = 3; // Constante renvoyée par la méthode `frapper` si on a bien frappé le personnage.
+  const COUPS_EPUISES = 4; // Constante renvoyée par la méthode `frapper` si on a déjà donné 3 coups aujourd'hui.
   
   
   public function __construct(array $donnees)
   {
     $this->hydrate($donnees);
+  }
+  
+  public function hydrate(array $donnees)
+  {
+    foreach ($donnees as $key => $value)
+    {
+      $method = 'set'.ucfirst($key);
+      
+      if (method_exists($this, $method))
+      {
+        $this->$method($value);
+      }
+    }
   }
   
   public function frapper(Personnage $perso)
@@ -31,19 +51,6 @@ class Personnage
     // On indique au personnage qu'il doit recevoir des dégâts.
     // Puis on retourne la valeur renvoyée par la méthode : self::PERSONNAGE_TUE ou self::PERSONNAGE_FRAPPE
     return $perso->recevoirDegats($this->_forcePersonnage);
-  }
-  
-  public function hydrate(array $donnees)
-  {
-    foreach ($donnees as $key => $value)
-    {
-      $method = 'set'.ucfirst($key);
-      
-      if (method_exists($this, $method))
-      {
-        $this->$method($value);
-      }
-    }
   }
   
   public function recevoirDegats(int $bonus)
@@ -72,6 +79,12 @@ class Personnage
 		}
 	}
 	
+	public function enregistrerCoup()
+	{
+		$this->_nbCoups += 1;
+		$this->_dernierCoup = new DateTime();
+	}
+	
 	public function levelUp() {
 		if ($this->_level < 100)
 		{
@@ -83,6 +96,13 @@ class Personnage
 	public function nomValide()
 	{
 		return !empty($this->_nom);
+	}
+	
+	public static function validateDate($date, $format = 'Y-m-d')
+	{
+		$d = DateTime::createFromFormat($format, $date);
+		// The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
+		return $d && $d->format($format) === $date;
 	}
   
   
@@ -116,6 +136,31 @@ class Personnage
   public function forcePersonnage()
   {
     return $this->_forcePersonnage;
+  }
+  
+  public function nbCoups()
+  {
+    return $this->_nbCoups;
+  }
+  
+  public function dernierCoup()
+  {
+    return $this->_dernierCoup;
+  }
+  
+  public function timeEndormi()
+  {
+    return $this->timeEndormi;
+  }
+  
+  public function type()
+  {
+    return $this->type;
+  }
+  
+  public function atout()
+  {
+    return $this->atout;
   }
 	
 	// SETTERS //
@@ -175,6 +220,50 @@ class Personnage
     if ($forcePersonnage >= 0 && $forcePersonnage <= 200)
     {
       $this->_forcePersonnage = $forcePersonnage;
+    }
+  }
+  
+  public function setNbCoups($nbCoups)
+  {
+    $nbCoups = (int) $nbCoups;
+    
+    if ($nbCoups >= 0 && $nbCoups <= 3)
+    {
+      $this->_nbCoups = $nbCoups;
+    }
+  }
+  
+  public function setDernierCoup($dernierCoup)
+  {
+    if (self::validateDate($dernierCoup))
+    {
+      $this->_dernierCoup = $dernierCoup;
+    }
+  }
+  
+  public function setTimeEndormi($timeEndormi)
+  {
+    if (self::validateDate($timeEndormi))
+    {
+      $this->timeEndormi = $timeEndormi;
+    }
+  }
+  
+  public function setType($type)
+  {
+		$type = strtolower($type);
+    if ($type == "magicien" || $type == "guerrier")
+    {
+      $this->type = $type;
+    }
+  }
+  
+  public function setAtout($atout)
+  {
+		$atout = intval($atout);
+    if ($atout >= 0 && $atout <= 5)
+    {
+      $this->atout = $atout;
     }
   }
 }
