@@ -1,14 +1,14 @@
 <?php
 class Personnage
 {
-  private $_degats,
-          $_id,
-          $_nom,
-					$_experience,
-					$_level,
-					$_forcePersonnage,
-					$_nbCoups,
-					$_dernierCoup;
+  protected $_degats,
+						$_id,
+						$_nom,
+						$_experience,
+						$_level,
+						$_forcePersonnage,
+						$_nbCoups,
+						$_dernierCoup;
 	
 	protected	$timeEndormi,
 						$type,
@@ -62,7 +62,9 @@ class Personnage
     {
       return self::PERSONNAGE_TUE;
     }
-    
+		
+		$this->updateAtout(); // On met à jour l'atout suivant les dégâts
+		
     // Sinon, on se contente de dire que le personnage a bien été frappé.
     return self::PERSONNAGE_FRAPPE;
   }
@@ -103,6 +105,31 @@ class Personnage
 		$d = DateTime::createFromFormat($format, $date);
 		// The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
 		return $d && $d->format($format) === $date;
+	}
+	
+	public function updateAtout()
+	{
+		if ($this->degats() >= 0 && $this->degats() < 25)
+		{
+			$this->atout = 4;
+		}
+		elseif ($this->degats() >= 25 && $this->degats() < 50)
+		{
+			$this->atout = 3;
+		}
+		elseif ($this->degats() >= 50 && $this->degats() < 75)
+		{
+			$this->atout = 2;
+		}
+		elseif ($this->degats() >= 75 && $this->degats() < 90)
+		{
+			$this->atout = 1;
+		}
+		else
+		{
+			$this->atout = 0;
+		}
+		var_dump($this->atout);
 	}
   
   
@@ -243,10 +270,9 @@ class Personnage
   
   public function setTimeEndormi($timeEndormi)
   {
-    if (self::validateDate($timeEndormi))
-    {
-      $this->timeEndormi = $timeEndormi;
-    }
+		$timeEndormi = intval($timeEndormi);
+		
+    $this->timeEndormi = $timeEndormi;
   }
   
   public function setType($type)

@@ -104,6 +104,41 @@
 			$message = 'Ce personnage n\'existe pas !'; // S'il n'existe pas, on affichera ce message.
 		}
 	}
+	elseif (isset($_GET['ensorceler']))
+	{
+		if (!isset($perso))
+		{
+			$message = "Impossible d'ensorceler sans être connecté !";
+		}
+		else
+		{
+			if (!$manager->exists(intval($_GET['ensorceler'])))
+			{
+				$message = "Ce personnage à ensorceler n'existe pas !";
+			}
+			else
+			{
+				$persoAEnsorceler = $manager->get(intval($_GET['ensorceler']));
+				$resu_sort = $perso->ensorceler($persoAEnsorceler);
+				
+				switch($resu_sort)
+				{
+					case Magicien::CEST_MOI:
+						$message = "Impossible de s'ensorceler soi-même !";
+						break;
+						
+					case Magicien::MANA_EMPTY:
+						$message = "Pas assez de magie !";
+						break;
+						
+					case Magicien::SORT_REUSSI:
+						$message = "Le personnage " . $persoAEnsorceler->nom() . " a bien été ensorcelé !";
+						$manager->update($persoAEnsorceler);
+						break;
+				}
+			}
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -127,12 +162,23 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
       <legend>Mes informations</legend>
       <p>
         Nom : <?= htmlspecialchars($perso->nom()) ?><br />
+        Type : <?= htmlspecialchars($perso->type()) ?><br />
         Dégâts : <?= $perso->degats() ?><br />
         Expérience : <?= $perso->experience() ?><br />
         Level : <?= $perso->level() ?><br />
         Force : <?= $perso->forcePersonnage() ?><br />
         <!--NB de coups : <?= $perso->nbCoups() ?><br />
         Dernier coup : <?= ($perso->dernierCoup() == null ? "--" : DateTime::createFromFormat('d/m/Y', $perso->dernierCoup()->date)) ?>-->
+<?php
+	if ($perso->type() == "magicien")
+	{
+		echo "Magie : ", $perso->atout();
+	}
+	elseif ($perso->type() == "guerrier")
+	{
+		echo "Protection : ", $perso->atout();
+	}
+?>
       </p>
     </fieldset>
     
@@ -140,15 +186,31 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
       <legend>Qui frapper ?</legend>
       <p>
 <?php
-$persos = $manager->getList($perso->nom());
-if (empty($persos))
+$delai = time() - $perso->timeEndormi();
+if ($delai < 3600 * 24) // Perso endormi : moins de 24h
 {
-  echo 'Personne à frapper !';
+	echo "Un magicien vous a endormi ! Vous vous réveillerez dans ", ($delai + 3600 * 24), "s.";
 }
-else
+else // Perso pas endormi
 {
-  foreach ($persos as $unPerso)
-    echo '<a href="?frapper=', $unPerso->id(), '">', htmlspecialchars($unPerso->nom()), '</a> (dégâts : ', $unPerso->degats(), ')<br />';
+	$persos = $manager->getList($perso->nom());
+	if (empty($persos))
+	{
+		echo 'Personne à frapper !';
+	}
+	else
+	{
+		foreach ($persos as $unPerso)
+		{
+			echo '<a href="?frapper=', $unPerso->id(), '">', htmlspecialchars($unPerso->nom()), '</a>
+						(dégâts : ', $unPerso->degats(), ' | type : ', $unPerso->type(), ')';
+			if ($perso->type() == "magicien")
+			{
+				echo ' | <a href="?ensorceler=', $unPerso->id(), '">Lancer un sort</a>';
+			}
+			echo '<br />';
+		}
+	}
 }
 ?>
       </p>
