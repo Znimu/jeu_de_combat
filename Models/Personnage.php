@@ -1,16 +1,15 @@
 <?php
-class Personnage
+abstract class Personnage
 {
-  protected $_degats,
-						$_id,
-						$_nom,
-						$_experience,
-						$_level,
-						$_forcePersonnage,
-						$_nbCoups,
-						$_dernierCoup;
-	
-	protected	$timeEndormi,
+  protected $degats,
+						$id,
+						$nom,
+						$experience,
+						$level,
+						$forcePersonnage,
+						$nbCoups,
+						$dernierCoup,
+						$timeEndormi,
 						$type,
 						$atout;
   
@@ -40,7 +39,7 @@ class Personnage
   
   public function frapper(Personnage $perso)
   {
-    if ($perso->id() == $this->_id)
+    if ($perso->id() == $this->id)
     {
       return self::CEST_MOI;
     }
@@ -50,7 +49,7 @@ class Personnage
     
     // On indique au personnage qu'il doit recevoir des dégâts.
     // Puis on retourne la valeur renvoyée par la méthode : self::PERSONNAGE_TUE ou self::PERSONNAGE_FRAPPE
-    return $perso->recevoirDegats($this->_forcePersonnage);
+    return $perso->recevoirDegats($this->forcePersonnage);
   }
   
   public function recevoirDegats(int $bonus)
@@ -73,31 +72,31 @@ class Personnage
 	{
 		if ($this->experience() + $experience >= 100) {
 			$this->levelUp();
-			$this->_experience = 0;
+			$this->experience = 0;
 		}
 		else
 		{
-			$this->_experience += $experience;
+			$this->experience += $experience;
 		}
 	}
 	
 	public function enregistrerCoup()
 	{
-		$this->_nbCoups += 1;
-		$this->_dernierCoup = new DateTime();
+		$this->nbCoups += 1;
+		$this->dernierCoup = new DateTime();
 	}
 	
 	public function levelUp() {
-		if ($this->_level < 100)
+		if ($this->level < 100)
 		{
-			$this->_level += 1;
-			$this->_forcePersonnage += 2;
+			$this->level += 1;
+			$this->forcePersonnage += 2;
 		}
 	}
 	
 	public function nomValide()
 	{
-		return !empty($this->_nom);
+		return !empty($this->nom);
 	}
 	
 	public static function validateDate($date, $format = 'Y-m-d')
@@ -129,7 +128,7 @@ class Personnage
 		{
 			$this->atout = 0;
 		}
-		var_dump($this->atout);
+		//var_dump($this->atout);
 	}
   
   
@@ -137,42 +136,42 @@ class Personnage
   
   public function degats()
   {
-    return $this->_degats;
+    return $this->degats;
   }
   
   public function id()
   {
-    return $this->_id;
+    return $this->id;
   }
   
   public function nom()
   {
-    return $this->_nom;
+    return $this->nom;
   }
   
   public function experience()
   {
-    return $this->_experience;
+    return $this->experience;
   }
   
   public function level()
   {
-    return $this->_level;
+    return $this->level;
   }
   
   public function forcePersonnage()
   {
-    return $this->_forcePersonnage;
+    return $this->forcePersonnage;
   }
   
   public function nbCoups()
   {
-    return $this->_nbCoups;
+    return $this->nbCoups;
   }
   
   public function dernierCoup()
   {
-    return $this->_dernierCoup;
+    return $this->dernierCoup;
   }
   
   public function timeEndormi()
@@ -198,7 +197,7 @@ class Personnage
     
     if ($degats >= 0 && $degats <= 100)
     {
-      $this->_degats = $degats;
+      $this->degats = $degats;
     }
   }
   
@@ -208,7 +207,7 @@ class Personnage
     
     if ($id > 0)
     {
-      $this->_id = $id;
+      $this->id = $id;
     }
   }
   
@@ -216,7 +215,7 @@ class Personnage
   {
     if (is_string($nom))
     {
-      $this->_nom = $nom;
+      $this->nom = $nom;
     }
   }
   
@@ -226,7 +225,7 @@ class Personnage
     
     if ($experience >= 0 && $experience < 100)
     {
-      $this->_experience = $experience;
+      $this->experience = $experience;
     }
   }
   
@@ -236,7 +235,7 @@ class Personnage
     
     if ($level >= 1 && $level < 100)
     {
-      $this->_level = $level;
+      $this->level = $level;
     }
   }
   
@@ -246,7 +245,7 @@ class Personnage
     
     if ($forcePersonnage >= 0 && $forcePersonnage <= 200)
     {
-      $this->_forcePersonnage = $forcePersonnage;
+      $this->forcePersonnage = $forcePersonnage;
     }
   }
   
@@ -256,7 +255,7 @@ class Personnage
     
     if ($nbCoups >= 0 && $nbCoups <= 3)
     {
-      $this->_nbCoups = $nbCoups;
+      $this->nbCoups = $nbCoups;
     }
   }
   
@@ -264,7 +263,7 @@ class Personnage
   {
     if (self::validateDate($dernierCoup))
     {
-      $this->_dernierCoup = $dernierCoup;
+      $this->dernierCoup = $dernierCoup;
     }
   }
   

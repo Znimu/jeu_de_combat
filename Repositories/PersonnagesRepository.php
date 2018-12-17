@@ -13,11 +13,15 @@ class PersonnagesRepository
     $q = $this->_db->prepare('INSERT INTO personnages(nom, type) VALUES(:nom, :type)');
     $q->bindValue(':nom', $perso->nom());
     $q->bindValue(':type', $perso->type());
-    $q->execute();
+    if (!$q->execute())
+			echo "ERREUR CRITIQUE SQL : Personnage pas enregistré !";
     
     $perso->hydrate([
       'id' => $this->_db->lastInsertId(),
       'degats' => 0,
+			'level' => 1,
+			'experience' => 0,
+			'forcePersonnage' => 0
     ]);
   }
   
@@ -57,6 +61,8 @@ class PersonnagesRepository
 				return new Magicien($donnees);
 			elseif ($donnees['type'] == "guerrier")
 				return new Guerrier($donnees);
+			else
+				echo "ERREUR : Type inconnu !";
     }
     else
     {
@@ -68,6 +74,8 @@ class PersonnagesRepository
 				return new Magicien($donnees);
 			elseif ($donnees['type'] == "guerrier")
 				return new Guerrier($donnees);
+			else
+				echo "ERREUR : Type inconnu !";
     }
   }
   
@@ -80,7 +88,10 @@ class PersonnagesRepository
     
     while ($donnees = $q->fetch(PDO::FETCH_ASSOC))
     {
-      $persos[] = new Personnage($donnees);
+			if ($donnees['type'] == "magicien")
+				$persos[] = new Magicien($donnees);
+			elseif ($donnees['type'] == "guerrier")
+				$persos[] = new Guerrier($donnees);
     }
     
     return $persos;

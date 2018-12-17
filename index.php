@@ -90,7 +90,7 @@
 		else
 		{
 			$manager->add($perso);
-			$perso = $manager->get($perso->nom());
+			$perso = $manager->get($_POST['nom']);
 		}
 	}
 	elseif (isset($_POST['utiliser']) && isset($_POST['nom'])) // Si on a voulu utiliser un personnage.
