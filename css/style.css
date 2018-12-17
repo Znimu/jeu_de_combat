@@ -1,0 +1,78 @@
+
+
+body {
+	background: #f6f6f6;
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 18px;
+	color: black;
+}
+
+.deco {
+	text-decoration: none;
+}
+.deco:hover {
+	text-decoration: underline;
+}
+
+.img_float_left {
+	float: left;
+	font-size: 37px;
+	margin-right: 10px;
+}
+
+.clear_both {
+	clear: both;
+}
+
+label {
+	width: 120px;
+}
+input[type=text], select {
+	box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+	
+	margin-left: 50px;
+	width: 200px;
+	padding:5px 2px;
+	font-family: 'Source Sans Pro', sans-serif;
+}
+input[type=submit], select {
+	width: 200px;
+	padding:5px 2px;
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+.fa-exclamation-triangle, .deco {
+	color: #dd0000;
+}
+.fa-check-circle {
+	color: green;
+}
+
+.sante_max {
+	display: inline-block;
+	top: 4px;
+	width: 200px;
+	height: 12px;
+	border: 1px solid black;
+	border-radius: 10px;
+}
+.sante_actu {
+	position: relative;
+	display: inline-block;
+	height: 12px;
+	background-color: red;
+	border-radius: 10px;
+}
+
+.lien_frapper {
+	display: inline-block;
+	width: 150px;
+	/*padding: 5px;*/
+	border: 1px solid black;
+	margin-top: 4px;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+}

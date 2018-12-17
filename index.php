@@ -29,34 +29,34 @@
 				switch($resu_frappe)
 				{
 					case Personnage::CEST_MOI:
-						$message = "Impossible de se frapper soi-même !";
+						$message = '<i class="fas fa-exclamation-triangle"></i> Impossible de se frapper soi-même !';
 						break;
 						
 					case Personnage::PERSONNAGE_TUE:
 						$manager->update($perso);
-						$message = "Le personnage " . $persoAFrapper->nom() . " est mort !";
+						$message = '<i class="fas fa-check-circle"></i> Le personnage ' . $persoAFrapper->nom() . ' est mort !';
 						$manager->delete($persoAFrapper);
 						break;
 						
 					case Personnage::PERSONNAGE_FRAPPE:
 						$manager->update($perso);
-						$message = "Le personnage " . $persoAFrapper->nom() . " a été frappé !";
+						$message = '<i class="fas fa-check-circle"></i> Le personnage ' . $persoAFrapper->nom() . ' a été frappé !';
 						$manager->update($persoAFrapper);
 						break;
 						
 					case Personnage::COUPS_EPUISES:
-						$message = "Le personnage " . $perso->nom() . " a épuisé ses frappes !";
+						$message = '<i class="fas fa-exclamation-triangle"></i> Le personnage ' . $perso->nom() . ' a épuisé ses frappes !';
 						break;
 				}
 			}
 			else
 			{
-				$message = "Impossible de trouver le personnage à frapper !";
+				$message = '<i class="fas fa-exclamation-triangle"></i> Impossible de trouver le personnage à frapper !';
 			}
 		}
 		else 
 		{
-			$message = "Impossible de frapper sans être connecté !";
+			$message = '<i class="fas fa-exclamation-triangle"></i> Impossible de frapper sans être connecté !';
 		}
 	}
 	
@@ -79,12 +79,12 @@
 		
 		if (!$perso->nomValide())
 		{
-			$message = 'Le nom choisi est invalide.';
+			$message = '<i class="fas fa-exclamation-triangle"></i> Le nom choisi est invalide.';
 			unset($perso);
 		}
 		elseif ($manager->exists($perso->nom()))
 		{
-			$message = 'Le nom du personnage est déjà pris.';
+			$message = '<i class="fas fa-exclamation-triangle"></i> Le nom du personnage est déjà pris.';
 			unset($perso);
 		}
 		else
@@ -101,14 +101,14 @@
 		}
 		else
 		{
-			$message = 'Ce personnage n\'existe pas !'; // S'il n'existe pas, on affichera ce message.
+			$message = '<i class="fas fa-exclamation-triangle"></i> Ce personnage n\'existe pas !'; // S'il n'existe pas, on affichera ce message.
 		}
 	}
 	elseif (isset($_GET['ensorceler']))
 	{
 		if (!isset($perso))
 		{
-			$message = "Impossible d'ensorceler sans être connecté !";
+			$message = '<i class="fas fa-exclamation-triangle"></i> Impossible d\'ensorceler sans être connecté !';
 		}
 		else
 		{
@@ -124,11 +124,11 @@
 				switch($resu_sort)
 				{
 					case Magicien::CEST_MOI:
-						$message = "Impossible de s'ensorceler soi-même !";
+						$message = '<i class="fas fa-exclamation-triangle"></i> Impossible de s\'ensorceler soi-même !';
 						break;
 						
 					case Magicien::MANA_EMPTY:
-						$message = "Pas assez de magie !";
+						$message = '<i class="fas fa-exclamation-triangle"></i> Pas assez de magie !';
 						break;
 						
 					case Magicien::SORT_REUSSI:
@@ -143,11 +143,14 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<title>TP : Mini jeu de combat</title>
-
-	<meta charset="utf-8" />
+		<title>TP : Mini jeu de combat</title>
+		<meta charset="utf-8" />
+    <link rel='stylesheet' href="css/style.css" />
+		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 	</head>
-	<body><p>Nombre de personnages créés : <?= $manager->count() ?></p>
+	<body><p>Nombre de personnages enregistrés : <?= $manager->count() ?></p>
+    <p><a class="deco" href="?deconnexion=1"><i class="fas fa-power-off"></i> Déconnexion</a></p>
 <?php
 if (isset($message)) // On a un message à afficher ?
 {
@@ -157,13 +160,30 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
 {
 	//var_dump($perso->dernierCoup());
 ?>
-    <p><a href="?deconnexion=1">Déconnexion</a></p>
     <fieldset>
       <legend>Mes informations</legend>
       <p>
-        Nom : <?= htmlspecialchars($perso->nom()) ?><br />
+<?php
+	echo '<div class="img_float_left">';
+	if ($perso->type() == "magicien")
+	{
+		echo '<i class="fas fa-hat-wizard"></i>';
+	}
+	elseif ($perso->type() == "guerrier")
+	{
+		echo '<i class="fas fa-shield-alt"></i>';
+	}
+	echo '</div>';
+?>
+        Nom : <strong><?= htmlspecialchars($perso->nom()) ?></strong><br />
         Type : <?= htmlspecialchars($perso->type()) ?><br />
-        Dégâts : <?= $perso->degats() ?><br />
+				<div class="clear_both"></div>
+        Dégâts : <?= $perso->degats() ?>
+				<br />
+				<div class="sante_max">
+					<div class="sante_actu" style="width:<?= $perso->degats() * 2 ?>px">&nbsp;</div>
+				</div>
+				<br />
         Expérience : <?= $perso->experience() ?><br />
         Level : <?= $perso->level() ?><br />
         Force : <?= $perso->forcePersonnage() ?><br />
@@ -182,6 +202,8 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
       </p>
     </fieldset>
     
+		<br />
+		
     <fieldset>
       <legend>Qui frapper ?</legend>
       <p>
@@ -213,7 +235,10 @@ else // Perso pas endormi
 	{
 		foreach ($persos as $unPerso)
 		{
-			echo '<a href="?frapper=', $unPerso->id(), '">', htmlspecialchars($unPerso->nom()), '</a>
+			echo '<a class="lien_frapper" href="?frapper=', $unPerso->id(), '">';
+			if ($unPerso->timeEndormi() > time())
+				echo "zZz ";
+			echo htmlspecialchars($unPerso->nom()), '</a>
 						(dégâts : ', $unPerso->degats(), ' | type : ', $unPerso->type(), ')';
 			if ($perso->type() == "magicien")
 			{
@@ -233,12 +258,14 @@ else
 ?>
     <form action="" method="post">
       <p>
-        Nom : <input type="text" name="nom" maxlength="50" />
+        <label for="nom">Nom : </label>
+				<input type="text" name="nom" maxlength="50" />
         <input type="submit" value="Utiliser ce personnage" name="utiliser" /><br />
-				Type : 	<select name="type">
-									<option value="magicien">Magicien</option>
-									<option value="guerrier">Guerrier</option>
-								</select>
+				<label for="type">Type : </label>
+				<select name="type">
+					<option value="magicien">Magicien</option>
+					<option value="guerrier">Guerrier</option>
+				</select>
         <input type="submit" value="Créer ce personnage" name="creer" />
       </p>
     </form>
