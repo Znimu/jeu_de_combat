@@ -12,9 +12,10 @@
 	$db = new PDO('mysql:host=localhost;dbname=test2', 'root', '');
 	$manager = new PersonnagesRepository($db);
 	
-	if (isset($_SESSION['perso']))
+	if (isset($_SESSION['perso_id']))
 	{
-		$perso = $_SESSION['perso'];
+		if ($manager->exists(intval($_SESSION['perso_id'])))
+			$perso = $manager->get(intval($_SESSION['perso_id']));
 	}
 	
 	if (isset($_GET['frapper']))
@@ -283,6 +284,6 @@ else
 <?php
 	if (isset($perso))
 	{
-		$_SESSION['perso'] = $perso;
+		$_SESSION['perso_id'] = $perso->id();
 	}
 ?>
