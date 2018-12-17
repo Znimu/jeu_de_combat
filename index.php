@@ -149,8 +149,13 @@
 		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 	</head>
-	<body><p>Nombre de personnages enregistrés : <?= $manager->count() ?></p>
-    <p><a class="deco" href="?deconnexion=1"><i class="fas fa-power-off"></i> Déconnexion</a></p>
+	<body>
+		
+		<main>
+			
+			<p>Nombre de personnages enregistrés : <?= $manager->count() ?></p>
+			<div class="deco_div"><a class="deco" href="?deconnexion=1"><i class="fas fa-power-off"></i> Déconnexion</a></div>
+			<br />
 <?php
 if (isset($message)) // On a un message à afficher ?
 {
@@ -160,9 +165,9 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
 {
 	//var_dump($perso->dernierCoup());
 ?>
-    <fieldset>
-      <legend>Mes informations</legend>
-      <p>
+			<fieldset>
+				<legend>Mes informations</legend>
+				<p>
 <?php
 	echo '<div class="img_float_left">';
 	if ($perso->type() == "magicien")
@@ -175,20 +180,20 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
 	}
 	echo '</div>';
 ?>
-        Nom : <strong><?= htmlspecialchars($perso->nom()) ?></strong><br />
-        Type : <?= htmlspecialchars($perso->type()) ?><br />
-				<div class="clear_both"></div>
-        Dégâts : <?= $perso->degats() ?>
-				<br />
-				<div class="sante_max">
-					<div class="sante_actu" style="width:<?= $perso->degats() * 2 ?>px">&nbsp;</div>
-				</div>
-				<br />
-        Expérience : <?= $perso->experience() ?><br />
-        Level : <?= $perso->level() ?><br />
-        Force : <?= $perso->forcePersonnage() ?><br />
-        <!--NB de coups : <?= $perso->nbCoups() ?><br />
-        Dernier coup : <?= ($perso->dernierCoup() == null ? "--" : DateTime::createFromFormat('d/m/Y', $perso->dernierCoup()->date)) ?>-->
+					Nom : <strong><?= htmlspecialchars($perso->nom()) ?></strong><br />
+					Type : <?= htmlspecialchars($perso->type()) ?><br />
+					<div class="clear_both"></div>
+					Dégâts : <?= $perso->degats() ?>
+					<br />
+					<div class="sante_max">
+						<div class="sante_actu" style="width:<?= $perso->degats() * 2 ?>px">&nbsp;</div>
+					</div>
+					<br />
+					Expérience : <?= $perso->experience() ?><br />
+					Level : <?= $perso->level() ?><br />
+					Force : <?= $perso->forcePersonnage() ?><br />
+					<!--NB de coups : <?= $perso->nbCoups() ?><br />
+					Dernier coup : <?= ($perso->dernierCoup() == null ? "--" : DateTime::createFromFormat('d/m/Y', $perso->dernierCoup()->date)) ?>-->
 <?php
 	if ($perso->type() == "magicien")
 	{
@@ -199,14 +204,14 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
 		echo "Protection : ", $perso->atout();
 	}
 ?>
-      </p>
-    </fieldset>
-    
-		<br />
-		
-    <fieldset>
-      <legend>Qui frapper ?</legend>
-      <p>
+				</p>
+			</fieldset>
+			
+			<br />
+			
+			<fieldset>
+				<legend>Qui frapper ?</legend>
+				<p>
 <?php
 if ($perso->timeEndormi() > time()) // Perso endormi : moins de 24h
 {
@@ -249,29 +254,30 @@ else // Perso pas endormi
 	}
 }
 ?>
-      </p>
-    </fieldset>
+				</p>
+			</fieldset>
 <?php
 }
 else
 {
 ?>
-    <form action="" method="post">
-      <p>
-        <label for="nom">Nom : </label>
-				<input type="text" name="nom" maxlength="50" />
-        <input type="submit" value="Utiliser ce personnage" name="utiliser" /><br />
-				<label for="type">Type : </label>
-				<select name="type">
-					<option value="magicien">Magicien</option>
-					<option value="guerrier">Guerrier</option>
-				</select>
-        <input type="submit" value="Créer ce personnage" name="creer" />
-      </p>
-    </form>
+			<form action="" method="post">
+				<p>
+					<label for="nom">Nom : </label>
+					<input type="text" name="nom" maxlength="50" />
+					<input type="submit" value="Utiliser ce personnage" name="utiliser" /><br />
+					<label for="type">Type : </label>
+					<select name="type">
+						<option value="magicien">Magicien</option>
+						<option value="guerrier">Guerrier</option>
+					</select>
+					<input type="submit" value="Créer ce personnage" name="creer" />
+				</p>
+			</form>
 <?php
 }
 ?>
+		</main>
   </body>
 </html>
 <?php
