@@ -113,29 +113,36 @@
 		}
 		else
 		{
-			if (!$manager->exists(intval($_GET['ensorceler'])))
+			if ($perso->type() != "magicien")
 			{
-				$message = "Ce personnage à ensorceler n'existe pas !";
+				$message = '<i class="fas fa-exclamation-triangle"></i> Ce personnage ne peut pas encorceler !';
 			}
 			else
-			{
-				$persoAEnsorceler = $manager->get(intval($_GET['ensorceler']));
-				$resu_sort = $perso->ensorceler($persoAEnsorceler);
-				
-				switch($resu_sort)
 				{
-					case Magicien::CEST_MOI:
-						$message = '<i class="fas fa-exclamation-triangle"></i> Impossible de s\'ensorceler soi-même !';
-						break;
-						
-					case Magicien::MANA_EMPTY:
-						$message = '<i class="fas fa-exclamation-triangle"></i> Pas assez de magie !';
-						break;
-						
-					case Magicien::SORT_REUSSI:
-						$message = "Le personnage " . $persoAEnsorceler->nom() . " a bien été ensorcelé !";
-						$manager->update($persoAEnsorceler);
-						break;
+				if (!$manager->exists(intval($_GET['ensorceler'])))
+				{
+					$message = '<i class="fas fa-exclamation-triangle"></i> Ce personnage à ensorceler n\'existe pas !';
+				}
+				else
+				{
+					$persoAEnsorceler = $manager->get(intval($_GET['ensorceler']));
+					$resu_sort = $perso->ensorceler($persoAEnsorceler);
+					
+					switch($resu_sort)
+					{
+						case Magicien::CEST_MOI:
+							$message = '<i class="fas fa-exclamation-triangle"></i> Impossible de s\'ensorceler soi-même !';
+							break;
+							
+						case Magicien::MANA_EMPTY:
+							$message = '<i class="fas fa-exclamation-triangle"></i> Pas assez de magie !';
+							break;
+							
+						case Magicien::SORT_REUSSI:
+							$message = "Le personnage " . $persoAEnsorceler->nom() . " a bien été ensorcelé !";
+							$manager->update($persoAEnsorceler);
+							break;
+					}
 				}
 			}
 		}
