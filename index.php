@@ -186,10 +186,21 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
       <legend>Qui frapper ?</legend>
       <p>
 <?php
-$delai = $perso->timeEndormi() - time();
 if ($perso->timeEndormi() > time()) // Perso endormi : moins de 24h
 {
-	echo "Un magicien vous a endormi ! Vous vous réveillerez dans ", $delai, "s.";
+	$delai = $perso->timeEndormi() - time();
+	$delai_txt = "";
+	$nb_tmp = intval($delai / 3600);
+	if ($nb_tmp > 0) { // HOURS
+		$delai_txt .= " " . $nb_tmp . " h";
+		$delai -= 3600 * $nb_tmp;
+	}
+	$nb_tmp = intval($delai / 60);
+	if ($nb_tmp > 0) { // MINUTES
+		$delai_txt .= " " . $nb_tmp . " min";
+		$delai -= 60 * $nb_tmp;
+	}
+	echo "Un magicien vous a endormi ! Vous vous réveillerez dans", $delai_txt, " ", $delai, "s.";
 }
 else // Perso pas endormi
 {
