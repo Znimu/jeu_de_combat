@@ -6,7 +6,7 @@ class Magicien extends Personnage
 	
 	public function ensorceler(Personnage $perso)
 	{
-    if ($perso->_id == $this->_id)
+    if ($perso->id == $this->id)
     {
       return self::CEST_MOI;
     }
@@ -16,12 +16,12 @@ class Magicien extends Personnage
 			return self::MANA_EMPTY;
 		}
 		
-		return $perso->endormir();
+		return $perso->endormir($this->atout() * 6 * 3600);
 	}
 	
-	public function endormir()
+	public function endormir($duree)
 	{
-		$this->timeEndormi = time();
+		$this->timeEndormi = time() + $duree;
 		return self::SORT_REUSSI;
 	}
 }
