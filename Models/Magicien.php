@@ -16,12 +16,12 @@ class Magicien extends Personnage
 			return self::MANA_EMPTY;
 		}
 		
-		return $perso->endormir($this->atout() * 6 * 3600);
+		return $this->endormir($perso, $this->atout() * 6 * 3600);
 	}
 	
-	public function endormir($duree)
+	public function endormir(Personnage $perso, int $duree)
 	{
-		$this->timeEndormi = time() + $duree;
+		$perso->timeEndormi = time() + $duree;
 		return self::SORT_REUSSI;
 	}
 }
