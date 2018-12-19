@@ -63,19 +63,22 @@
 	
 	if (isset($_POST['creer']) && isset($_POST['nom']) && isset($_POST['type'])) // Si on a voulu créer un personnage.
 	{
-		if ($_POST['type'] == "magicien")
-		{
-			$perso = new Magicien([
-				'nom' => $_POST['nom'],
-				'type' => $_POST['type']
-			]); // On crée un nouveau magicien.
-		}
-		elseif ($_POST['type'] == "guerrier")
-		{
-			$perso = new Guerrier([
-				'nom' => $_POST['nom'],
-				'type' => $_POST['type']
-			]); // On crée un nouveau guerrier.
+		switch($_POST['type']) {
+			case "magicien":
+				$perso = new Magicien([
+					'nom' => $_POST['nom'],
+					'type' => $_POST['type']
+				]); // On crée un nouveau magicien.
+				break;
+			case "guerrier":
+				$perso = new Guerrier([
+					'nom' => $_POST['nom'],
+					'type' => $_POST['type']
+				]); // On crée un nouveau guerrier.
+				break;
+			default:
+				$message = '<i class="fas fa-exclamation-triangle"></i> Type de personnage inconnu.';
+				break;
 		}
 		
 		if (!$perso->nomValide())
@@ -147,150 +150,17 @@
 			}
 		}
 	}
-?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>TP : Mini jeu de combat</title>
-		<meta charset="utf-8" />
-    <link rel='stylesheet' href="css/style.css" />
-		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300" rel="stylesheet" type="text/css">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	</head>
-	<body>
-		
-		<main>
-			
-			<p>Nombre de personnages enregistrés : <?= $manager->count() ?></p>
-			<div class="deco_div"><a class="deco" href="?deconnexion=1"><i class="fas fa-power-off"></i> Déconnexion</a></div>
-			<br />
-<?php
-if (isset($message)) // On a un message à afficher ?
-{
-  echo '<p>', $message, '</p>'; // Si oui, on l'affiche.
+
+	$nb_perso_enregistres = $manager->count();
+
+if (isset($perso)) { // On est connecté
+	require('Views/MainView.php');
 }
-if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
-{
-	//var_dump($perso->dernierCoup());
-?>
-			<fieldset>
-				<legend>Mes informations</legend>
-				<p>
-<?php
-	echo '<div class="img_float_left">';
-	if ($perso->type() == "magicien")
-	{
-		echo '<i class="fas fa-hat-wizard"></i>';
-	}
-	elseif ($perso->type() == "guerrier")
-	{
-		echo '<i class="fas fa-shield-alt"></i>';
-	}
-	echo '</div>';
-?>
-					Nom : <strong><?= htmlspecialchars($perso->nom()) ?></strong><br />
-					Type : <?= htmlspecialchars($perso->type()) ?><br />
-					<div class="clear_both"></div>
-					Dégâts : <?= $perso->degats() ?>
-					<br />
-					<div class="sante_max">
-						<div class="sante_actu" style="width:<?= $perso->degats() * 2 ?>px">&nbsp;</div>
-					</div>
-					<br />
-					Expérience : <?= $perso->experience() ?><br />
-					Level : <?= $perso->level() ?><br />
-					Force : <?= $perso->forcePersonnage() ?><br />
-					<!--NB de coups : <?= $perso->nbCoups() ?><br />
-					Dernier coup : <?= ($perso->dernierCoup() == null ? "--" : DateTime::createFromFormat('d/m/Y', $perso->dernierCoup()->date)) ?>-->
-<?php
-	if ($perso->type() == "magicien")
-	{
-		echo "Magie : ", $perso->atout();
-	}
-	elseif ($perso->type() == "guerrier")
-	{
-		echo "Protection : ", $perso->atout();
-	}
-?>
-				</p>
-			</fieldset>
-			
-			<br />
-			
-			<fieldset>
-				<legend>Qui frapper ?</legend>
-				<p>
-<?php
-if ($perso->timeEndormi() > time()) // Perso endormi : moins de 24h
-{
-	$delai = $perso->timeEndormi() - time();
-	$delai_txt = "";
-	$nb_tmp = intval($delai / 3600);
-	if ($nb_tmp > 0) { // HOURS
-		$delai_txt .= " " . $nb_tmp . " h";
-		$delai -= 3600 * $nb_tmp;
-	}
-	$nb_tmp = intval($delai / 60);
-	if ($nb_tmp > 0) { // MINUTES
-		$delai_txt .= " " . $nb_tmp . " min";
-		$delai -= 60 * $nb_tmp;
-	}
-	echo "Un magicien vous a endormi ! Vous vous réveillerez dans", $delai_txt, " ", $delai, "s.";
+else {
+	require('Views/ConnexionView.php');
 }
-else // Perso pas endormi
-{
-	$persos = $manager->getList($perso->nom());
-	if (empty($persos))
-	{
-		echo 'Personne à frapper !';
-	}
-	else
-	{
-		foreach ($persos as $unPerso)
-		{
-			echo '<a class="lien_frapper" href="?frapper=', $unPerso->id(), '">';
-			if ($unPerso->timeEndormi() > time())
-				echo "zZz ";
-			echo htmlspecialchars($unPerso->nom()), '</a>
-						(dégâts : ', $unPerso->degats(), ' | type : ', $unPerso->type(), ')';
-			if ($perso->type() == "magicien")
-			{
-				echo ' | <a href="?ensorceler=', $unPerso->id(), '">Lancer un sort</a>';
-			}
-			echo '<br />';
-		}
-	}
+
+if (isset($perso)) {
+	$_SESSION['perso_id'] = $perso->id();
 }
-?>
-				</p>
-			</fieldset>
-<?php
-}
-else
-{
-?>
-			<form action="" method="post">
-				<p>
-					<label for="nom">Nom : </label>
-					<input type="text" name="nom" maxlength="50" />
-					<input type="submit" value="Utiliser ce personnage" name="utiliser" /><br />
-					<label for="type">Type : </label>
-					<select name="type">
-						<option value="magicien">Magicien</option>
-						<option value="guerrier">Guerrier</option>
-					</select>
-					<input type="submit" value="Créer ce personnage" name="creer" />
-				</p>
-			</form>
-<?php
-}
-?>
-		</main>
-  </body>
-</html>
-<?php
-	if (isset($perso))
-	{
-		$_SESSION['perso_id'] = $perso->id();
-	}
 ?>
