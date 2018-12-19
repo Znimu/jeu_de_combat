@@ -20,7 +20,12 @@ main {
 	text-align: right;
 }
 
+.p_nb_perso {
+	margin-left: 2.5%;
+}
+
 .deco {
+	margin-right: 2.5%;
 	text-decoration: none;
 }
 .deco:hover {
@@ -35,6 +40,32 @@ main {
 
 .clear_both {
 	clear: both;
+}
+
+.column-layout {
+	display: flex;
+}
+.div_block1, .div_block2 {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 20px;
+	margin: 2.5%;
+	background: #FFF;
+	box-shadow: 0 0 3px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+.div_block div, .div_block div {
+	padding: 0;
+	margin: 0;
+}
+
+.div_block1 {
+	width: 30%;
+}
+.div_block2 {
+	width: 65%;
 }
 
 label {
@@ -64,9 +95,11 @@ input[type=submit], select {
 }
 .fa-hat-wizard {
 	color: #aa00ff;
+	transition: .5s all;
 }
 .fa-shield-alt {
 	color: #0088dd;
+	transition: .5s all;
 }
 
 .sante_max {
@@ -85,7 +118,7 @@ input[type=submit], select {
 	border-radius: 10px;
 }
 
-.lien_frapper {
+.lien_frapper, .lien_ensorceler {
 	display: inline-block;
 	width: 150px;
 	/*padding: 5px;*/
@@ -96,8 +129,16 @@ input[type=submit], select {
 	text-decoration: none;
 	color: black;
 	border-radius: 5px;
+	transition: .5s all;
 }
 .lien_frapper:hover {
-	background-color: #ff0000;
+	background-color: #dd0000;
+	color: white;
+}
+.lien_ensorceler:hover {
+	background-color: #aa00ff;
+	color: white;
+}
+.lien_frapper:hover > .fa-hat-wizard, .lien_frapper:hover > .fa-shield-alt {
 	color: white;
 }

@@ -142,7 +142,7 @@
 							break;
 							
 						case Magicien::SORT_REUSSI:
-							$message = "Le personnage " . $persoAEnsorceler->nom() . " a bien été ensorcelé !";
+							$message = '<i class="fas fa-check-circle"></i> Le personnage ' . $persoAEnsorceler->nom() . ' a bien été ensorcelé !';
 							$manager->update($persoAEnsorceler);
 							break;
 					}

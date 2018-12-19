@@ -10,7 +10,7 @@
         
     <body>
 		<main>	
-			<p>Nombre de personnages enregistrés : <?= $nb_perso_enregistres ?></p>
+			<p class="p_nb_perso">Nombre de personnages enregistrés : <?= $nb_perso_enregistres ?></p>
             <?= $content ?>
         </main>
     </body>

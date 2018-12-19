@@ -10,12 +10,12 @@ if (isset($message)) // On a un message à afficher ?
 
 			<div class="deco_div"><a class="deco" href="?deconnexion=1"><i class="fas fa-power-off"></i> Déconnexion</a></div>
 
-			<br />
-			<fieldset>
-				<legend>Mes informations</legend>
-				<p>
+            <br />
+            <div class="column-layout">
+                <div class="div_block1">
+                    <p>
 <?php
-	echo '<div class="img_float_left">';
+	echo '<span class="img_float_left">';
 	if ($perso->type() == "magicien")
 	{
 		echo '<i class="fas fa-hat-wizard"></i>';
@@ -24,22 +24,22 @@ if (isset($message)) // On a un message à afficher ?
 	{
 		echo '<i class="fas fa-shield-alt"></i>';
 	}
-	echo '</div>';
+	echo '</span>';
 ?>
-					Nom : <strong><?= htmlspecialchars($perso->nom()) ?></strong><br />
-					Type : <?= htmlspecialchars($perso->type()) ?><br />
-					<div class="clear_both"></div>
-					Dégâts : <?= $perso->degats() ?>
-					<br />
-					<div class="sante_max">
-						<div class="sante_actu" style="width:<?= $perso->degats() * 2 ?>px">&nbsp;</div>
-					</div>
-					<br />
-					Expérience : <?= $perso->experience() ?><br />
-					Level : <?= $perso->level() ?><br />
-					Force : <?= $perso->forcePersonnage() ?><br />
-					<!--NB de coups : <?= $perso->nbCoups() ?><br />
-					Dernier coup : <?= ($perso->dernierCoup() == null ? "--" : DateTime::createFromFormat('d/m/Y', $perso->dernierCoup()->date)) ?>-->
+                        Nom : <strong><?= htmlspecialchars($perso->nom()) ?></strong><br />
+                        Type : <?= htmlspecialchars($perso->type()) ?><br />
+                        <div class="clear_both"></div>
+                        Dégâts : <?= $perso->degats() ?>
+                        <br />
+                        <div class="sante_max">
+                            <div class="sante_actu" style="width:<?= $perso->degats() * 2 ?>px">&nbsp;</div>
+                        </div>
+                        <br />
+                        Expérience : <?= $perso->experience() ?><br />
+                        Level : <?= $perso->level() ?><br />
+                        Force : <?= $perso->forcePersonnage() ?><br />
+                        <!--NB de coups : <?= $perso->nbCoups() ?><br />
+                        Dernier coup : <?= ($perso->dernierCoup() == null ? "--" : DateTime::createFromFormat('d/m/Y', $perso->dernierCoup()->date)) ?>-->
 <?php
 	if ($perso->type() == "magicien")
 	{
@@ -50,16 +50,12 @@ if (isset($message)) // On a un message à afficher ?
 		echo "Protection : ", $perso->atout();
 	}
 ?>
-				</p>
-			</fieldset>
-
-            
-			
-			<br />
-			
-			<fieldset>
-				<legend>Qui frapper ?</legend>
-				<p>
+                    </p>
+                </div>
+                
+                <div class="div_block2">
+                    <div><p>Qui frapper ?</p></div>
+                    <div><p>
 <?php
 if ($perso->timeEndormi() > time()) // Perso endormi : moins de 24h
 {
@@ -90,20 +86,30 @@ else // Perso pas endormi
 		{
 			echo '<a class="lien_frapper" href="?frapper=', $unPerso->id(), '">';
 			if ($unPerso->timeEndormi() > time())
-				echo "zZz ";
+                echo "zZz ";
+            if ($unPerso->type() == "magicien")
+            {
+                echo '<i class="fas fa-hat-wizard"></i> ';
+            }
+            elseif ($unPerso->type() == "guerrier")
+            {
+                echo '<i class="fas fa-shield-alt"></i> ';
+            }
 			echo htmlspecialchars($unPerso->nom()), '</a>
-						(dégâts : ', $unPerso->degats(), ' | type : ', $unPerso->type(), ')';
+						(dégâts : ', $unPerso->degats(), ')';
 			if ($perso->type() == "magicien")
 			{
-				echo ' | <a href="?ensorceler=', $unPerso->id(), '">Lancer un sort</a>';
+				echo ' <a class="lien_ensorceler" href="?ensorceler=', $unPerso->id(), '">Lancer un sort</a>';
 			}
 			echo '<br />';
 		}
 	}
 }
 ?>
-				</p>
-			</fieldset>
+                    </p>
+                    </div>
+                </div>
+            </div>
 
 <?php $content = ob_get_clean(); ?>
 
