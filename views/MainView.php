@@ -15,17 +15,19 @@ if (isset($message)) // On a un message à afficher ?
                     <p>
 <?php
 	echo '<span class="img_float_left">';
-	if ($perso->type() == "magicien")
-	{
-		echo '<i class="fas fa-hat-wizard"></i>';
-	}
-	elseif ($perso->type() == "guerrier")
-	{
-		echo '<i class="fas fa-shield-alt"></i>';
-	}
-	elseif ($perso->type() == "brute")
-	{
-		echo '<i class="fas fa-fist-raised"></i>';
+	switch($perso->type()) {
+		case "magicien":
+			echo '<i class="fas fa-hat-wizard"></i>';
+			break;
+		case "guerrier":
+			echo '<i class="fas fa-shield-alt"></i>';
+			break;
+		case "brute":
+			echo '<i class="fas fa-fist-raised"></i>';
+			break;
+		default:
+			echo 'Err.';
+			break;
 	}
 	echo '</span>';
 ?>
@@ -43,17 +45,19 @@ if (isset($message)) // On a un message à afficher ?
                         <!--NB de coups : <?= $perso->nbCoups() ?><br />
                         Dernier coup : <?= ($perso->dernierCoup() == null ? "--" : DateTime::createFromFormat('d/m/Y', $perso->dernierCoup()->date)) ?>-->
 <?php
-	if ($perso->type() == "magicien")
-	{
-		echo "Magie : ", $perso->atout();
-	}
-	elseif ($perso->type() == "guerrier")
-	{
-		echo "Protection : ", $perso->atout();
-	}
-	elseif ($perso->type() == "brute")
-	{
-		echo "Attaque : +", $perso->atout();
+	switch($perso->type()) {
+		case "magicien":
+			echo "Magie : ", $perso->atout();
+			break;
+		case "guerrier":
+			echo "Protection : ", $perso->atout();
+			break;
+		case "brute":
+			echo "Attaque : +", $perso->atout();
+			break;
+		default:
+			echo 'Err.';
+			break;
 	}
 ?>
                     </p>
@@ -82,18 +86,20 @@ else // Perso pas endormi
 			echo '<a class="lien_frapper" href="?frapper=', $unPerso->id(), '">';
 			if ($unPerso->timeEndormi() > time())
                 echo "zZz ";
-            if ($unPerso->type() == "magicien")
-            {
-                echo '<i class="fas fa-hat-wizard"></i> ';
-            }
-            elseif ($unPerso->type() == "guerrier")
-            {
-                echo '<i class="fas fa-shield-alt"></i> ';
-            }
-            elseif ($unPerso->type() == "brute")
-            {
-                echo '<i class="fas fa-fist-raised"></i> ';
-            }
+			switch($unPerso->type()) {
+				case "magicien":
+					echo '<i class="fas fa-hat-wizard"></i> ';
+					break;
+				case "guerrier":
+					echo '<i class="fas fa-shield-alt"></i> ';
+					break;
+				case "brute":
+					echo '<i class="fas fa-fist-raised"></i> ';
+					break;
+				default:
+					echo 'Err.';
+					break;
+			}
 			echo htmlspecialchars($unPerso->nom()), '</a>
 						(dégâts : ', $unPerso->degats(), ')';
 			if ($perso->type() == "magicien")
