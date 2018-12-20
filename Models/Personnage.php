@@ -49,7 +49,11 @@ abstract class Personnage
     
     // On indique au personnage qu'il doit recevoir des dégâts.
     // Puis on retourne la valeur renvoyée par la méthode : self::PERSONNAGE_TUE ou self::PERSONNAGE_FRAPPE
-    return $perso->recevoirDegats($this->forcePersonnage);
+    switch ($this->type())
+    {
+      case 'brute': return $perso->recevoirDegats($this->forcePersonnage + $this->atout); break;
+      default: return $perso->recevoirDegats($this->forcePersonnage); break;
+    }
   }
   
   public function recevoirDegats(int $bonus)
@@ -129,7 +133,23 @@ abstract class Personnage
 			$this->atout = 0;
 		}
 		//var_dump($this->atout);
-	}
+  }
+  
+  function timeEndormiString(int $delai)
+  {
+    $delai_txt = "";
+    $nb_tmp = intval($delai / 3600);
+    if ($nb_tmp > 0) { // HOURS
+      $delai_txt .= " " . $nb_tmp . " h";
+      $delai -= 3600 * $nb_tmp;
+    }
+    $nb_tmp = intval($delai / 60);
+    if ($nb_tmp > 0) { // MINUTES
+      $delai_txt .= " " . $nb_tmp . " min";
+      $delai -= 60 * $nb_tmp;
+    }
+    return $delai_txt . " " . $delai;
+  }
   
   
   // GETTERS //
@@ -277,7 +297,7 @@ abstract class Personnage
   public function setType($type)
   {
 		$type = strtolower($type);
-    if ($type == "magicien" || $type == "guerrier")
+    if ($type == "magicien" || $type == "guerrier" || $type == "brute")
     {
       $this->type = $type;
     }

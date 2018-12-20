@@ -1,16 +1,15 @@
 <?php $title = 'Jeu de combat'; ?>
 
 <?php ob_start(); ?>
-<?php
-if (isset($message)) // On a un message à afficher ?
-{
-  echo '<p>', $message, '</p>'; // Si oui, on l'affiche.
-}
-?>
 
 			<div class="deco_div"><a class="deco" href="?deconnexion=1"><i class="fas fa-power-off"></i> Déconnexion</a></div>
 
-            <br />
+<?php
+if (isset($message)) // On a un message à afficher ?
+{
+  	echo '<p class="message ' . $typeMessage . '">', $message, '</p>'; // Si oui, on l'affiche.
+}
+?>
             <div class="column-layout">
                 <div class="div_block1">
                     <p>
@@ -24,10 +23,13 @@ if (isset($message)) // On a un message à afficher ?
 	{
 		echo '<i class="fas fa-shield-alt"></i>';
 	}
+	elseif ($perso->type() == "brute")
+	{
+		echo '<i class="fas fa-fist-raised"></i>';
+	}
 	echo '</span>';
 ?>
-                        Nom : <strong><?= htmlspecialchars($perso->nom()) ?></strong><br />
-                        Type : <?= htmlspecialchars($perso->type()) ?><br />
+                        <span class="span_name">Nom : <strong><?= htmlspecialchars($perso->nom()) ?></strong></span><br />
                         <div class="clear_both"></div>
                         Dégâts : <?= $perso->degats() ?>
                         <br />
@@ -49,29 +51,22 @@ if (isset($message)) // On a un message à afficher ?
 	{
 		echo "Protection : ", $perso->atout();
 	}
+	elseif ($perso->type() == "brute")
+	{
+		echo "Attaque : +", $perso->atout();
+	}
 ?>
                     </p>
                 </div>
                 
                 <div class="div_block2">
-                    <div><p>Qui frapper ?</p></div>
-                    <div><p>
+                    <h3>Qui frapper ?</h3>
+                    <p class="listCharacters">
 <?php
 if ($perso->timeEndormi() > time()) // Perso endormi : moins de 24h
 {
 	$delai = $perso->timeEndormi() - time();
-	$delai_txt = "";
-	$nb_tmp = intval($delai / 3600);
-	if ($nb_tmp > 0) { // HOURS
-		$delai_txt .= " " . $nb_tmp . " h";
-		$delai -= 3600 * $nb_tmp;
-	}
-	$nb_tmp = intval($delai / 60);
-	if ($nb_tmp > 0) { // MINUTES
-		$delai_txt .= " " . $nb_tmp . " min";
-		$delai -= 60 * $nb_tmp;
-	}
-	echo "Un magicien vous a endormi ! Vous vous réveillerez dans", $delai_txt, " ", $delai, "s.";
+	echo "Un magicien vous a endormi !<br />Vous vous réveillerez dans", $perso->timeEndormiString($delai), "s.";
 }
 else // Perso pas endormi
 {
@@ -95,6 +90,10 @@ else // Perso pas endormi
             {
                 echo '<i class="fas fa-shield-alt"></i> ';
             }
+            elseif ($unPerso->type() == "brute")
+            {
+                echo '<i class="fas fa-fist-raised"></i> ';
+            }
 			echo htmlspecialchars($unPerso->nom()), '</a>
 						(dégâts : ', $unPerso->degats(), ')';
 			if ($perso->type() == "magicien")
@@ -107,7 +106,6 @@ else // Perso pas endormi
 }
 ?>
                     </p>
-                    </div>
                 </div>
             </div>
 

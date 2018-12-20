@@ -9,7 +9,8 @@ body {
 
 main {
 	margin: auto;
-	width: 800px;
+	width: 90%;
+	max-width: 800px;
 }
 
 .deco_div {
@@ -36,10 +37,31 @@ main {
 	float: left;
 	font-size: 37px;
 	margin-right: 10px;
+    margin-top: -10px;
 }
 
 .clear_both {
 	clear: both;
+}
+
+.message {
+	margin: 2.5%;
+	padding: 10px;
+	box-shadow: 0 0 3px rgba(0,0,0,0.1);
+}
+.Confirm {
+	background: #bbffbb;
+}
+.Erreur {
+	background: #ffbbbb;
+}
+
+.formConnexion {
+	margin: 2.5%;
+	padding: 0 30px;
+	background: #FFF;
+	box-shadow: 0 0 3px rgba(0,0,0,0.1);
+	text-align: center;
 }
 
 .column-layout {
@@ -68,6 +90,10 @@ main {
 	width: 65%;
 }
 
+.span_name {
+	margin-top: 8px;
+}
+
 label {
 	width: 120px;
 }
@@ -89,9 +115,14 @@ input[type=submit], select {
 
 .fa-exclamation-triangle, .deco {
 	color: #dd0000;
+	margin-right: 10px;
+}
+.deco {
+	margin-right: 2.5%;
 }
 .fa-check-circle {
 	color: green;
+	margin-right: 10px;
 }
 .fa-hat-wizard {
 	color: #aa00ff;
@@ -101,8 +132,13 @@ input[type=submit], select {
 	color: #0088dd;
 	transition: .5s all;
 }
+.fa-fist-raised {
+	color: #990000;
+	transition: .5s all;
+}
 
 .sante_max {
+	position: relative;
 	display: inline-block;
 	top: 4px;
 	width: 200px;
@@ -122,7 +158,7 @@ input[type=submit], select {
 	display: inline-block;
 	width: 150px;
 	/*padding: 5px;*/
-	border: 1px solid black;
+	border: 1px solid #ddd;
 	margin-top: 4px;
 	text-align: center;
 	font-weight: bold;
@@ -141,4 +177,8 @@ input[type=submit], select {
 }
 .lien_frapper:hover > .fa-hat-wizard, .lien_frapper:hover > .fa-shield-alt {
 	color: white;
+}
+
+.listCharacters {
+	width: 100%;
 }

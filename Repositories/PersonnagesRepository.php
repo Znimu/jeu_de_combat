@@ -56,13 +56,14 @@ class PersonnagesRepository
     {
       $q = $this->_db->query('SELECT * FROM personnages WHERE id = '.$info);
       $donnees = $q->fetch(PDO::FETCH_ASSOC);
-      
-			if ($donnees['type'] == "magicien")
-				return new Magicien($donnees);
-			elseif ($donnees['type'] == "guerrier")
-				return new Guerrier($donnees);
-			else
-				echo "ERREUR : Type inconnu !";
+    
+      switch ($donnees['type'])
+      {
+        case 'guerrier': return new Guerrier($donnees);
+        case 'magicien': return new Magicien($donnees);
+        case 'brute': return new Brute($donnees);
+        default: return null;
+      }
     }
     else
     {
@@ -70,12 +71,13 @@ class PersonnagesRepository
       $q->execute([':nom' => $info]);
       $donnees = $q->fetch(PDO::FETCH_ASSOC);
     
-			if ($donnees['type'] == "magicien")
-				return new Magicien($donnees);
-			elseif ($donnees['type'] == "guerrier")
-				return new Guerrier($donnees);
-			else
-				echo "ERREUR : Type inconnu !";
+      switch ($donnees['type'])
+      {
+        case 'guerrier': return new Guerrier($donnees);
+        case 'magicien': return new Magicien($donnees);
+        case 'brute': return new Brute($donnees);
+        default: return null;
+      }
     }
   }
   
@@ -88,10 +90,12 @@ class PersonnagesRepository
     
     while ($donnees = $q->fetch(PDO::FETCH_ASSOC))
     {
-			if ($donnees['type'] == "magicien")
-				$persos[] = new Magicien($donnees);
-			elseif ($donnees['type'] == "guerrier")
-				$persos[] = new Guerrier($donnees);
+      switch ($donnees['type'])
+      {
+        case 'guerrier': $persos[] = new Guerrier($donnees); break;
+        case 'magicien': $persos[] = new Magicien($donnees); break;
+        case 'brute': $persos[] = new Brute($donnees); break;
+      }
     }
     
     return $persos;
