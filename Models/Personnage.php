@@ -297,7 +297,7 @@ abstract class Personnage
   public function setType($type)
   {
 		$type = strtolower($type);
-    if ($type == "magicien" || $type == "guerrier" || $type == "brute" || $type == "sorcier")
+    if ($type == "magicien" || $type == "guerrier" || $type == "brute" || $type == "sorcier" || $type == "paladin")
     {
       $this->type = $type;
     }

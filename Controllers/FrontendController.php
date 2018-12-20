@@ -54,6 +54,12 @@ class FrontendController
 					'type' => $_POST['type']
 				]);
 				break;
+			case "paladin":
+				$this->perso = new Paladin([
+					'nom' => $_POST['nom'],
+					'type' => $_POST['type']
+				]);
+				break;
 			default:
 				$this->message = '<i class="fas fa-exclamation-triangle"></i> Type de personnage inconnu.';
 				$this->typeMessage = "Erreur";
@@ -232,6 +238,54 @@ class FrontendController
 								}
 							}
 							$this->message = '<i class="fas fa-check-circle"></i> La boule de feu a bien été lancée sur ' . $persoBouleDeFeu->nom() . ' !';
+							break;
+					}
+				}
+			}
+		}
+	}
+
+	public function soigner()
+	{
+		if (!isset($this->perso))
+		{
+			$this->message = '<i class="fas fa-exclamation-triangle"></i> Impossible de soigner sans être connecté !';
+			$this->typeMessage = "Erreur";
+		}
+		else
+		{
+			if ($this->perso->type() != "paladin")
+			{
+				$this->message = '<i class="fas fa-exclamation-triangle"></i> Ce personnage ne peut pas soigner !';
+				$this->typeMessage = "Erreur";
+			}
+			else
+				{
+				if (!$this->manager->exists(intval($_GET['soigner'])))
+				{
+					$this->message = '<i class="fas fa-exclamation-triangle"></i> Ce personnage à soigner n\'existe pas !';
+					$this->typeMessage = "Erreur";
+				}
+				else
+				{
+					$persoASoigner = $this->manager->get(intval($_GET['soigner']));
+					$resu_sort = $this->perso->soigner($persoASoigner);
+					
+					switch($resu_sort)
+					{
+						case Paladin::CEST_MOI:
+							$this->message = '<i class="fas fa-exclamation-triangle"></i> Impossible de se soigner soi-même !';
+							$this->typeMessage = "Erreur";
+							break;
+							
+						case Paladin::MANA_EMPTY:
+							$this->message = '<i class="fas fa-exclamation-triangle"></i> Pas assez de magie !';
+							$this->typeMessage = "Erreur";
+							break;
+							
+						case Paladin::SORT_REUSSI:
+							$this->message = '<i class="fas fa-check-circle"></i> Le personnage ' . $persoASoigner->nom() . ' a bien été soigné !';
+							$this->manager->update($persoASoigner);
 							break;
 					}
 				}

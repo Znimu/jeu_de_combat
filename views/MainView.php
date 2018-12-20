@@ -28,6 +28,9 @@ if (isset($message)) // On a un message à afficher ?
 		case "sorcier":
 			echo '<i class="fas fa-fire"></i>';
 			break;
+		case "paladin":
+			echo '<i class="fas fa-gavel"></i>';
+			break;
 		default:
 			echo 'Err.';
 			break;
@@ -59,6 +62,9 @@ if (isset($message)) // On a un message à afficher ?
 			echo "Attaque : +", $perso->atout();
 			break;
 		case "sorcier":
+			echo "Magie : ", $perso->atout();
+			break;
+		case "paladin":
 			echo "Magie : ", $perso->atout();
 			break;
 		default:
@@ -105,6 +111,9 @@ else // Perso pas endormi
 				case "sorcier":
 					echo '<i class="fas fa-fire"></i> ';
 					break;
+				case "paladin":
+					echo '<i class="fas fa-gavel"></i> ';
+					break;
 				default:
 					echo 'Err.';
 					break;
@@ -117,6 +126,10 @@ else // Perso pas endormi
 			elseif ($perso->type() == "sorcier")
 			{
 				echo ' <a class="lien_bouleDeFeu" href="?bouleDeFeu=', $unPerso->id(), '">Boule de feu</a>';
+			}
+			elseif ($perso->type() == "paladin")
+			{
+				echo ' <a class="lien_soigner" href="?soigner=', $unPerso->id(), '">Soigner</a>';
 			}
 			echo '<br />';
 		}

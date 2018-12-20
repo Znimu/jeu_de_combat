@@ -44,6 +44,10 @@
 	{
 		$FEController->bouleDeFeu();
 	}
+	elseif (isset($_GET['soigner']))
+	{
+		$FEController->soigner();
+	}
 
 $nb_perso_enregistres = $FEController->nbPersoEnregistres();
 $message = $FEController->message;

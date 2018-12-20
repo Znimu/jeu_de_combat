@@ -63,6 +63,7 @@ class PersonnagesRepository
         case 'magicien': return new Magicien($donnees);
         case 'brute': return new Brute($donnees);
         case 'sorcier': return new Sorcier($donnees);
+        case 'paladin': return new Paladin($donnees);
         default: return null;
       }
     }
@@ -78,6 +79,7 @@ class PersonnagesRepository
         case 'magicien': return new Magicien($donnees);
         case 'brute': return new Brute($donnees);
         case 'sorcier': return new Sorcier($donnees);
+        case 'paladin': return new Paladin($donnees);
         default: return null;
       }
     }
@@ -98,6 +100,7 @@ class PersonnagesRepository
         case 'magicien': $persos[] = new Magicien($donnees); break;
         case 'brute': $persos[] = new Brute($donnees); break;
         case 'sorcier': $persos[] = new Sorcier($donnees); break;
+        case 'paladin': $persos[] = new Paladin($donnees); break;
       }
     }
     
