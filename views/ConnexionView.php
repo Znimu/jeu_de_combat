@@ -16,9 +16,10 @@ if (isset($message)) // On a un message à afficher ?
         <input type="submit" value="Utiliser ce personnage" name="utiliser" /><br />
         <label for="type">Type : </label>
         <select name="type">
-            <option value="magicien">Magicien</option>
-            <option value="guerrier">Guerrier</option>
             <option value="brute">Brute</option>
+            <option value="guerrier">Guerrier</option>
+            <option value="magicien">Magicien</option>
+            <option value="sorcier">Sorcier</option>
         </select>
         <input type="submit" value="Créer ce personnage" name="creer" />
     </p>

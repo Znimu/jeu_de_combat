@@ -62,6 +62,7 @@ class PersonnagesRepository
         case 'guerrier': return new Guerrier($donnees);
         case 'magicien': return new Magicien($donnees);
         case 'brute': return new Brute($donnees);
+        case 'sorcier': return new Sorcier($donnees);
         default: return null;
       }
     }
@@ -76,6 +77,7 @@ class PersonnagesRepository
         case 'guerrier': return new Guerrier($donnees);
         case 'magicien': return new Magicien($donnees);
         case 'brute': return new Brute($donnees);
+        case 'sorcier': return new Sorcier($donnees);
         default: return null;
       }
     }
@@ -95,6 +97,7 @@ class PersonnagesRepository
         case 'guerrier': $persos[] = new Guerrier($donnees); break;
         case 'magicien': $persos[] = new Magicien($donnees); break;
         case 'brute': $persos[] = new Brute($donnees); break;
+        case 'sorcier': $persos[] = new Sorcier($donnees); break;
       }
     }
     

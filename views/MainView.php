@@ -25,6 +25,9 @@ if (isset($message)) // On a un message à afficher ?
 		case "brute":
 			echo '<i class="fas fa-fist-raised"></i>';
 			break;
+		case "sorcier":
+			echo '<i class="fas fa-fire"></i>';
+			break;
 		default:
 			echo 'Err.';
 			break;
@@ -54,6 +57,9 @@ if (isset($message)) // On a un message à afficher ?
 			break;
 		case "brute":
 			echo "Attaque : +", $perso->atout();
+			break;
+		case "sorcier":
+			echo "Magie : ", $perso->atout();
 			break;
 		default:
 			echo 'Err.';
@@ -96,15 +102,21 @@ else // Perso pas endormi
 				case "brute":
 					echo '<i class="fas fa-fist-raised"></i> ';
 					break;
+				case "sorcier":
+					echo '<i class="fas fa-fire"></i> ';
+					break;
 				default:
 					echo 'Err.';
 					break;
 			}
-			echo htmlspecialchars($unPerso->nom()), '</a>
-						(dégâts : ', $unPerso->degats(), ')';
+			echo htmlspecialchars($unPerso->nom()), '</a> (dégâts : ', $unPerso->degats(), ')';
 			if ($perso->type() == "magicien")
 			{
 				echo ' <a class="lien_ensorceler" href="?ensorceler=', $unPerso->id(), '">Lancer un sort</a>';
+			}
+			elseif ($perso->type() == "sorcier")
+			{
+				echo ' <a class="lien_bouleDeFeu" href="?bouleDeFeu=', $unPerso->id(), '">Boule de feu</a>';
 			}
 			echo '<br />';
 		}

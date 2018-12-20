@@ -136,6 +136,10 @@ input[type=submit], select {
 	color: #990000;
 	transition: .5s all;
 }
+.fa-fire {
+	color: #ffcc00;
+	transition: .5s all;
+}
 
 .sante_max {
 	position: relative;
@@ -154,7 +158,7 @@ input[type=submit], select {
 	border-radius: 10px;
 }
 
-.lien_frapper, .lien_ensorceler {
+.lien_frapper, .lien_ensorceler, .lien_bouleDeFeu {
 	display: inline-block;
 	width: 150px;
 	/*padding: 5px;*/
@@ -177,6 +181,10 @@ input[type=submit], select {
 }
 .lien_frapper:hover > .fa-hat-wizard, .lien_frapper:hover > .fa-shield-alt {
 	color: white;
+}
+.lien_bouleDeFeu:hover {
+	background-color: #ffcc00;
+	color: black;
 }
 
 .listCharacters {

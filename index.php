@@ -88,6 +88,12 @@
 					'type' => $_POST['type']
 				]);
 				break;
+			case "sorcier":
+				$perso = new Sorcier([
+					'nom' => $_POST['nom'],
+					'type' => $_POST['type']
+				]);
+				break;
 			default:
 				$message = '<i class="fas fa-exclamation-triangle"></i> Type de personnage inconnu.';
 				$typeMessage = "Erreur";
@@ -165,6 +171,69 @@
 						case Magicien::SORT_REUSSI:
 							$message = '<i class="fas fa-check-circle"></i> Le personnage ' . $persoAEnsorceler->nom() . ' a bien été ensorcelé !';
 							$manager->update($persoAEnsorceler);
+							break;
+					}
+				}
+			}
+		}
+	}
+	elseif (isset($_GET['bouleDeFeu'])) {
+		if (!isset($perso))
+		{
+			$message = '<i class="fas fa-exclamation-triangle"></i> Impossible de lancer une boule de feu sans être connecté !';
+			$typeMessage = "Erreur";
+		}
+		else
+		{
+			if ($perso->type() != "sorcier")
+			{
+				$message = '<i class="fas fa-exclamation-triangle"></i> Ce personnage ne peut pas lancer de boule de feu !';
+				$typeMessage = "Erreur";
+			}
+			else
+				{
+				if (!$manager->exists(intval($_GET['bouleDeFeu'])))
+				{
+					$message = '<i class="fas fa-exclamation-triangle"></i> Ce personnage à viser avec une boule de feu n\'existe pas !';
+					$typeMessage = "Erreur";
+				}
+				else
+				{
+					$persoBouleDeFeu = $manager->get(intval($_GET['bouleDeFeu']));
+					$resu_sort = $perso->bouleDeFeu($persoBouleDeFeu);
+					
+					switch($resu_sort)
+					{
+						case Sorcier::CEST_MOI:
+							$message = '<i class="fas fa-exclamation-triangle"></i> Impossible de se se viser soi-même !';
+							$typeMessage = "Erreur";
+							break;
+							
+						case Sorcier::MANA_EMPTY:
+							$message = '<i class="fas fa-exclamation-triangle"></i> Pas assez de magie !';
+							$typeMessage = "Erreur";
+							break;
+							
+						case Sorcier::SORT_REUSSI:
+							$listePersos = $manager->getList($perso->nom());
+
+							// Dégâts sur tous les personnages, dégâts double sur le personnage visé
+							foreach ($listePersos as $unPerso)
+							{
+								if ($unPerso->id() != $perso->id()) // Pas de dégâts sur soi-même
+								{
+									if ($unPerso->id() == $persoBouleDeFeu->id())
+									{
+										$unPerso->setDegats($unPerso->degats() + $perso->atout() * 2);
+									}
+									else
+									{
+										$unPerso->setDegats($unPerso->degats() + $perso->atout());
+									}
+									$manager->update($unPerso);
+								}
+							}
+							$message = '<i class="fas fa-check-circle"></i> La boule de feu a bien été lancée sur ' . $persoBouleDeFeu->nom() . ' !';
 							break;
 					}
 				}
