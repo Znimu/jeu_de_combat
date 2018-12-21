@@ -31,6 +31,9 @@ if (isset($message)) // On a un message à afficher ?
 		case "paladin":
 			echo '<i class="fas fa-gavel"></i>';
 			break;
+		case "phoenix":
+			echo '<i class="fab fa-phoenix-framework"></i>';
+			break;
 		default:
 			echo 'Err.';
 			break;
@@ -66,6 +69,9 @@ if (isset($message)) // On a un message à afficher ?
 			break;
 		case "paladin":
 			echo "Magie : ", $perso->atout();
+			break;
+		case "phoenix":
+			echo "Immortel";
 			break;
 		default:
 			echo 'Err.';
@@ -113,6 +119,9 @@ else // Perso pas endormi
 					break;
 				case "paladin":
 					echo '<i class="fas fa-gavel"></i> ';
+					break;
+				case "phoenix":
+					echo '<i class="fab fa-phoenix-framework"></i> ';
 					break;
 				default:
 					echo 'Err.';

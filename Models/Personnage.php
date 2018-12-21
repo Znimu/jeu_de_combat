@@ -63,7 +63,14 @@ abstract class Personnage
     // Si on a 100 de dégâts ou plus, on dit que le personnage a été tué.
     if ($this->degats >= 100)
     {
-      return self::PERSONNAGE_TUE;
+      switch ($this->type())
+      {
+        case 'phoenix':
+          $this->degats = 0;
+          return self::PERSONNAGE_FRAPPE;
+        default: return self::PERSONNAGE_TUE;
+      }
+      
     }
 		
 		$this->updateAtout(); // On met à jour l'atout suivant les dégâts
@@ -297,7 +304,7 @@ abstract class Personnage
   public function setType($type)
   {
 		$type = strtolower($type);
-    if ($type == "magicien" || $type == "guerrier" || $type == "brute" || $type == "sorcier" || $type == "paladin")
+    if ($type == "magicien" || $type == "guerrier" || $type == "brute" || $type == "sorcier" || $type == "paladin" || $type == "phoenix")
     {
       $this->type = $type;
     }

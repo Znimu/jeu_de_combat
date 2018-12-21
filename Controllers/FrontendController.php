@@ -60,6 +60,12 @@ class FrontendController
 					'type' => $_POST['type']
 				]);
 				break;
+			case "phoenix":
+				$this->perso = new Phoenix([
+					'nom' => $_POST['nom'],
+					'type' => $_POST['type']
+				]);
+				break;
 			default:
 				$this->message = '<i class="fas fa-exclamation-triangle"></i> Type de personnage inconnu.';
 				$this->typeMessage = "Erreur";

@@ -20,6 +20,7 @@ if (isset($message)) // On a un message à afficher ?
             <option value="guerrier">Guerrier</option>
             <option value="magicien">Magicien</option>
             <option value="paladin">Paladin</option>
+            <option value="phoenix">Phoenix</option>
             <option value="sorcier">Sorcier</option>
         </select>
         <input type="submit" value="Créer ce personnage" name="creer" />

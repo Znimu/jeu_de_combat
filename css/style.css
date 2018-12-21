@@ -16,13 +16,23 @@ main {
 .deco_div {
 	position: relative;
 	margin: auto;
-	margin-top: -40px;
+	margin-top: -43px;
 	width: 800px;
 	text-align: right;
+	padding: 10px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
 
 .p_nb_perso {
-	margin-left: 2.5%;
+	margin: 0 2.5%;
+	padding: 10px;
+	background: #FFF;
+	box-shadow: 0 0 3px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
 
 .deco {
@@ -144,6 +154,10 @@ input[type=submit], select {
 	color: #3333ff;
 	transition: .5s all;
 }
+.fa-phoenix-framework {
+	color: #ff8000;
+	transition: .5s all;
+}
 
 .sante_max {
 	position: relative;
@@ -183,7 +197,12 @@ input[type=submit], select {
 	background-color: #aa00ff;
 	color: white;
 }
-.lien_frapper:hover > .fa-hat-wizard, .lien_frapper:hover > .fa-shield-alt {
+.lien_frapper:hover > .fa-hat-wizard,
+.lien_frapper:hover > .fa-shield-alt,
+.lien_frapper:hover > .fa-fist-raised,
+.lien_frapper:hover > .fa-fire,
+.lien_frapper:hover > .fa-gavel,
+.lien_frapper:hover > .fa-phoenix-framework {
 	color: white;
 }
 .lien_bouleDeFeu:hover {
