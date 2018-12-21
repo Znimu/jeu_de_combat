@@ -16,6 +16,7 @@ class Sorcier extends Personnage
             return self::MANA_EMPTY;
         }
         
+		$this->recevoirExperience(5);
         return self::SORT_REUSSI;
     }
 }

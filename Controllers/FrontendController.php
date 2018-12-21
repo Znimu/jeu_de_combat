@@ -240,7 +240,21 @@ class FrontendController
 									{
 										$unPerso->setDegats($unPerso->degats() + $this->perso->atout());
 									}
-									$this->manager->update($unPerso);
+									
+									if ($unPerso->degats() >= 100) {
+										if ($unPerso->type() == "phoenix") // Phoenix immortal
+										{
+											$unPerso->setDegats(0);
+											$this->manager->update($unPerso);
+										}
+										else // Perso tué
+										{
+											$this->manager->delete($unPerso);
+										}
+									}
+									else {
+										$this->manager->update($unPerso);
+									}
 								}
 							}
 							$this->message = '<i class="fas fa-check-circle"></i> La boule de feu a bien été lancée sur ' . $persoBouleDeFeu->nom() . ' !';

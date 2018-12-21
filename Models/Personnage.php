@@ -222,7 +222,7 @@ abstract class Personnage
   {
     $degats = (int) $degats;
     
-    if ($degats >= 0 && $degats <= 100)
+    if ($degats >= 0)
     {
       $this->degats = $degats;
     }
